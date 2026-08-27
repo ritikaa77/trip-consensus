@@ -102,7 +102,7 @@ h1 span {
 
 .step p {
   margin: 0;
-  color: #667671;
+  color: #38514a;
   font-size: 14px;
   line-height: 1.5;
 }
@@ -115,5 +115,36 @@ h1 span {
 
   .hero {
     padding: 18px 0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #edf5ef;
+    background: #132622;
+  }
+
+  .page {
+    background:
+      radial-gradient(circle at 85% 10%, #24493d 0, transparent 280px),
+      #132622;
+  }
+
+  .preview-card {
+    background: #1c322d;
+    border-color: #3c5750;
+  }
+
+  .step {
+    border-color: #3c5750;
+  }
+
+  .tag {
+    color: #a9d4c3;
+  }
+
+  .intro,
+  .step p {
+    color: #c1d1c9;
   }
 }
