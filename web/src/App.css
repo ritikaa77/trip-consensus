@@ -95,7 +95,7 @@ h1 span {
 }
 
 .step h2 {
-  color: #b07c6c;
+  color: #5a4037;
   margin: 0 0 8px;
   font-size: 17px;
 }
@@ -146,5 +146,13 @@ h1 span {
   .intro,
   .step p {
     color: #c1d1c9;
+  }
+    h1,
+  .step h2 {
+    color: #f4e1da;
+  }
+
+  h1 span {
+    color: #ffab8d;
   }
 }
