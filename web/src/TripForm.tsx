@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './TripForm.css';
 
 export interface TripFormData {
@@ -23,6 +23,29 @@ function TripForm({ onSubmit, onCancel }: TripFormProps) {
   const [budgetPerPerson, setBudgetPerPerson] = useState('');
   const [travellers, setTravellers] = useState(['', '']);
   const [error, setError] = useState('');
+
+  const firstInputRef = useRef<HTMLInputElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    // Remember whatever had focus before the modal opened (the trigger button)
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+    firstInputRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onCancel();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      // Restore focus to whatever triggered the modal, once it closes/unmounts
+      previouslyFocusedRef.current?.focus();
+    };
+  }, [onCancel]);
 
   const updateTraveller = (index: number, value: string) => {
     const next = [...travellers];
@@ -72,15 +95,32 @@ function TripForm({ onSubmit, onCancel }: TripFormProps) {
   };
 
   return (
-    <div className="trip-form-overlay">
-      <form className="trip-form" onSubmit={handleSubmit}>
-        <h2>Create a Group Trip</h2>
+    <div
+      className="trip-form-overlay"
+      ref={overlayRef}
+      onClick={(e) => {
+        if (e.target === overlayRef.current) onCancel();
+      }}
+    >
+      <form
+        className="trip-form"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="trip-form-title"
+        onSubmit={handleSubmit}
+      >
+        <h2 id="trip-form-title">Create a Group Trip</h2>
 
         {error && <p className="trip-form-error">{error}</p>}
 
         <label>
           Trip Name
-          <input value={tripName} onChange={(e) => setTripName(e.target.value)} placeholder="Goa Squad Trip" />
+          <input
+            ref={firstInputRef}
+            value={tripName}
+            onChange={(e) => setTripName(e.target.value)}
+            placeholder="Goa Squad Trip"
+          />
         </label>
 
         <label>
@@ -104,6 +144,7 @@ function TripForm({ onSubmit, onCancel }: TripFormProps) {
           <input
             type="number"
             min="0"
+            step="0.01"
             value={budgetPerPerson}
             onChange={(e) => setBudgetPerPerson(e.target.value)}
             placeholder="15000"
