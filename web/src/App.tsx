@@ -1,6 +1,15 @@
+import { useState } from 'react'
 import './App.css'
+import TripForm, { type TripFormData } from './TripForm'
 
 function App() {
+  const [showForm, setShowForm] = useState(false)
+
+  const handleCreateTrip = (data: TripFormData) => {
+    console.log('New trip created:', data)
+    setShowForm(false)
+  }
+
   return (
     <main className="page">
       <section className="hero">
@@ -18,7 +27,9 @@ function App() {
           recommends a plan.
         </p>
 
-        <button className="primary-button">Create a group trip</button>
+        <button className="primary-button" onClick={() => setShowForm(true)}>
+          Create a group trip
+        </button>
       </section>
 
       <section className="preview-card">
@@ -48,6 +59,10 @@ function App() {
           </div>
         </div>
       </section>
+
+      {showForm && (
+        <TripForm onSubmit={handleCreateTrip} onCancel={() => setShowForm(false)} />
+      )}
     </main>
   )
 }
