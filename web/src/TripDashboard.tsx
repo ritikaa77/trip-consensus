@@ -5,17 +5,23 @@ interface TripDashboardProps {
   trip: Trip
   onTogglePreferences: (index: number) => void
   onToggleApproval: (index: number) => void
+  onBack: () => void
 }
 
-function TripDashboard({ trip, onTogglePreferences, onToggleApproval }: TripDashboardProps) {
+function TripDashboard({ trip, onTogglePreferences, onToggleApproval, onBack }: TripDashboardProps) {
   const approvedCount = trip.members.filter((m) => m.approved).length
   const totalMembers = trip.members.length
   const allApproved = approvedCount === totalMembers
 
   return (
     <main className="dashboard">
-      <section className="dashboard-card">
-        <p className="tag">TRIP CONSENSUS</p>
+          <section className="dashboard-card">
+        <div className="dashboard-header-row">
+          <p className="tag">TRIP CONSENSUS</p>
+          <button className="dashboard-back-btn" onClick={onBack}>
+            ← Create another trip
+          </button>
+        </div>
         <h1 className="dashboard-title">{trip.tripName}</h1>
 
         <div className="dashboard-meta">

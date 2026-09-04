@@ -59,16 +59,16 @@ function App() {
     setTrip({ ...trip, members: updatedMembers })
   }
 
-  if (trip) {
+    if (trip) {
     return (
       <TripDashboard
         trip={trip}
         onTogglePreferences={togglePreferences}
         onToggleApproval={toggleApproval}
+        onBack={() => setTrip(null)}
       />
     )
   }
-
   return (
     <main className="page">
       <section className="hero">
