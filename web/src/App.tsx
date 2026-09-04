@@ -1,15 +1,74 @@
 import { useState } from 'react'
 import './App.css'
 import TripForm, { type TripFormData } from './TripForm'
+import TripDashboard from './TripDashboard'
+
+export interface Member {
+  name: string
+  preferencesReceived: boolean
+  approved: boolean
+}
+
+export interface Trip {
+  tripName: string
+  destination: string
+  startDate: string
+  endDate: string
+  budgetPerPerson: string
+  members: Member[]
+}
 
 function App() {
   const [showForm, setShowForm] = useState(false)
+  const [trip, setTrip] = useState<Trip | null>(null)
 
   const handleCreateTrip = (data: TripFormData) => {
-    console.log('New trip created:', data)
+    const newTrip: Trip = {
+      tripName: data.tripName,
+      destination: data.destination,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      budgetPerPerson: data.budgetPerPerson,
+      members: data.travellers.map((name) => ({
+        name,
+        preferencesReceived: false,
+        approved: false,
+      })),
+    }
+    setTrip(newTrip)
     setShowForm(false)
   }
 
+  const togglePreferences = (index: number) => {
+    if (!trip) return
+    const updatedMembers = [...trip.members]
+    updatedMembers[index] = {
+      ...updatedMembers[index],
+      preferencesReceived: !updatedMembers[index].preferencesReceived,
+    }
+    setTrip({ ...trip, members: updatedMembers })
+  }
+
+  const toggleApproval = (index: number) => {
+    if (!trip) return
+    const updatedMembers = [...trip.members]
+    updatedMembers[index] = {
+      ...updatedMembers[index],
+      approved: !updatedMembers[index].approved,
+    }
+    setTrip({ ...trip, members: updatedMembers })
+  }
+
+    if (trip) {
+    return (
+      <TripDashboard
+        trip={trip}
+        onTogglePreferences={togglePreferences}
+        onToggleApproval={toggleApproval}
+        onBack={() => setTrip(null)}
+      />
+    )
+  }
   return (
     <main className="page">
       <section className="hero">

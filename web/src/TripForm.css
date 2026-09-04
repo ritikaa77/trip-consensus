@@ -179,3 +179,34 @@
     color: #c1d1c9;
   }
 }
+.dashboard-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-back-btn {
+  background: none;
+  border: 1px solid #dce3dc;
+  color: #53766d;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-back-btn:hover {
+  background: #f2ede0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dashboard-back-btn {
+    border-color: #3c5750;
+    color: #a9d4c3;
+  }
+
+  .dashboard-back-btn:hover {
+    background: #24493d;
+  }
+}
